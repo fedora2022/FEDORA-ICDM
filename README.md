@@ -16,7 +16,7 @@ To replicate the results in our paper, please kindly follow the steps below: <br
 1. Git clone the whole repository.
 2. Set up the environment according to requirements.
 3. Modify the [data](./data) directories if necessary.
-4. Download the pre-trained models for the 5-fold cross validation in [pre-trained](./pre-trained).
+4. Download the pre-trained models for the 5-fold cross validation in [pre-trained](./pre-trained) and move them to [checkpoints](./checkpoints) directory.
 5. Run [FEDORA-Semtab-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab-test.py) and [FEDORA-WebTables-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables-test.py) and check the outputs.
 
 ## Train from scratch
