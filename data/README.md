@@ -2,3 +2,5 @@
 The data for Semtab2019 is contained in semtab.zip, you need to first unzip it and then use it.
 
 The data for Webtables is contained in the directory named [sato](./data/sato/).
+
+Please adjust the path according to the codes in [script](./scripts/), if needed.
