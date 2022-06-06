@@ -12,3 +12,5 @@ If you want to process the raw data by yourself, please check the following:
 Link to [Semtab2019 dataset](http://www.cs.ox.ac.uk/isg/challenges/sem-tab/2019/#datasets).
 
 Link to [Webtables dataset](https://github.com/megagonlabs/sato/tree/master/table_data).
+
+We have pre-processed the two datasets into .jsonl format in [data](https://github.com/fedora2022/FEDORA-ICDM/tree/main/data) directory. If you want to test FEDORA on other datasets, you can follow the /jsonl format stored and modify the experimental scripts accordingly. 
