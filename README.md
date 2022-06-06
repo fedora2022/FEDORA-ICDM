@@ -15,3 +15,5 @@ Python version used is python 3.6.13. Please check the requirements.txt file in 
 ## Train from scratch
 
 ## Contact
+
+Please submit a GitHub issue if you encounter any problems with FEDORA.
