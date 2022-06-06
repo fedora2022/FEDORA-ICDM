@@ -10,6 +10,8 @@ Python version used is python 3.6.13. Please check the requirements.txt file in 
 
 ## Replicating results
 
+## Extracting FDs
+
 ## Train from scratch
 
 ## Contact
