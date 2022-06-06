@@ -2,6 +2,8 @@
 
 This is the directory for FEDORA: **F**unctional-d**E**pen**D**ency-enhanced c**O**lumn semantic type annotation f**RA**mework.
 
+![Overview of FEDORA](./imgs/overview.png)
+
 ## Requirements
 
 We suggest using Anaconda to set up the enviroment needed for FEDORA.
