@@ -1,7 +1,9 @@
 import os
+
 MAX_LEN = 512
 SEP_TOKEN_ID = 102
-os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+
 import tqdm
 import time
 import json
@@ -38,7 +40,10 @@ def load_jsonl(jsonl_path, label_dict):
             fds = item['FD']
             fd_col_dict = {}
             fd_col = []
+            width = len(item['headers'])
             max_size = int(sqrt(len(item['headers'])))
+            for i in range(width):
+                fd_col_dict[i] = 0
             for fd_pair in fds:
                 if fd_pair[1] == target_alias:
                     for char in fd_pair[0]:
@@ -165,68 +170,28 @@ def metric_fn(preds, labels):
     }
 
 
-def train_model(model,train_loader,val_loader,lr,model_save_path='pytorch_FEDORA_model.pkl',early_stop_epochs=5,epochs=15):  
-    weight_decay = 1e-2
-    no_decay = ['bias', 'LayerNorm.weight']
-    optimizer_grouped_parameters = [
-        {'params': [p for n, p in model.named_parameters() if not any(nd in n for nd in no_decay)], 'weight_decay': weight_decay},
-        {'params': [p for n, p in model.named_parameters() if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
-    ]
-    optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=lr)
+def test_model(model,test_loader,lr,model_save_path='pytorch_FEDORA_model.pkl',early_stop_epochs=5,epochs=15):  
     loss_fn = torch.nn.CrossEntropyLoss().cuda()
-    cur_best_v_loss =10.0
-    for epoch in range(1,epochs+1):
-        model.train()
-        bar1 = tqdm(train_loader)
-        epoch_loss = 0
-        epoch_acc = 0
-        v_epoch_loss = 0
-        v_epoch_acc = 0
-        for i,(ids, fds, labels) in enumerate(bar1):
-            labels = labels.cuda()
-            fds = [fd.cuda() for fd in fds]
-            output = model(ids.cuda(), fds)
-            y_pred_prob = output
-            y_pred_label = y_pred_prob.argmax(dim=1)
-            loss = loss_fn(y_pred_prob.view(-1, 77), labels.view(-1))
-            acc = ((y_pred_label == labels.view(-1)).sum()).item()
-            loss.backward()
-            
-            optimizer.step()
-            optimizer.zero_grad()
-            epoch_loss += loss.item()
-            epoch_acc += acc
-            length_label = len(labels)
-            del ids, fds, labels
-            torch.cuda.empty_cache()
-        train_length = len(bar1)+1
-        print("Epoch:", epoch, "training_loss:", epoch_loss / (train_length), "\t", "current acc:", epoch_acc / ((train_length)-1+length_label))
-        model.eval()
-        bar2 = tqdm(val_loader)
-        pred_labels = []
-        true_labels = []
-        for j,(ids, fds, labels) in enumerate(bar2):
-            labels = labels.cuda()
-            fds = [fd.cuda() for fd in fds]
-            output = model(ids.cuda(), fds)
-            y_pred_prob = output
-            y_pred_label = y_pred_prob.argmax(dim=1)
-            vloss = loss_fn(y_pred_prob.view(-1, 77), labels.view(-1))
-            acc = ((y_pred_label == labels.view(-1)).sum()).item()
-            pred_labels.append(y_pred_label.detach().cpu().numpy())
-            true_labels.append(labels.detach().cpu().numpy())
-            v_epoch_loss += vloss.item()
-            v_epoch_acc += acc
-            v_length_label = len(labels)
-            del ids, fds
-            torch.cuda.empty_cache()
-        pred_labels = np.concatenate(pred_labels)
-        true_labels = np.concatenate(true_labels)
-        val_length = len(bar2)+1
-        print("validation_loss:", v_epoch_loss / (val_length), "\t", "current acc:", v_epoch_acc / (val_length-1+v_length_label))
-        f1_scores = metric_fn(pred_labels, true_labels)
-        print("weighted f1:", f1_scores['weighted_f1'], "\t", "macro f1:", f1_scores['macro_f1'])
-        torch.save(model.state_dict(),model_save_path+'_'+str(epoch)+'.pkl')
+    model.load_state_dict(torch.load(model_save_path))
+    model.eval()
+    bar = tqdm(test_loader)
+    pred_labels = []
+    true_labels = []
+    for i, (ids, fds, labels) in enumerate(bar):
+        labels = labels.cuda()
+        fds = [fd.cuda() for fd in fds]
+        output = model(ids.cuda(), fds)
+        y_pred_prob = output
+        y_pred_label = y_pred_prob.argmax(dim=1)
+        pred_labels.append(y_pred_label.detach().cpu().numpy())
+        true_labels.append(labels.detach().cpu().numpy())
+        del ids, fds
+        torch.cuda.empty_cache()
+    pred_labels = np.concatenate(pred_labels)
+    true_labels = np.concatenate(true_labels)
+    f1_scores = metric_fn(pred_labels, true_labels)
+    print("weighted f1:", f1_scores['weighted_f1'], "\t", "macro f1:", f1_scores['macro_f1'])
+    return f1_scores['weighted_f1'], f1_scores['macro_f1']
 
 if __name__ == '__main__':
     setup_seed(20)
@@ -288,16 +253,21 @@ if __name__ == '__main__':
     lrs = [1e-5]
     for lr in lrs:
         print("start for learning rate:", lr)
+        weighted_f1s = []
+        macro_f1s = []
         for cur_fold in range(5):
-            cur_train_cols = train_cols[cur_fold]
-            cur_train_labels = train_labels[cur_fold]
-            cur_train_fds = train_fds[cur_fold]
             cur_val_cols = val_cols[cur_fold]
             cur_val_labels = val_labels[cur_fold]
             cur_val_fds = val_fds[cur_fold]
-            train_loader = get_loader(cur_train_cols, cur_train_fds, cur_train_labels, BS, True)
             val_loader = get_loader(cur_val_cols, cur_val_fds, cur_val_labels, 1, False)
             model = FEDORA().cuda()
-            model_save_path = './checkpoints/FEDORA_FD_webtables'+"_lr="+str(lr)+'_{}'.format(cur_fold+1)
+            model_save_path = './checkpoints/FEDORA_FD_webtables'+"_lr="+str(lr)+'_{}_15.pkl'.format(cur_fold+1)
             print("Starting fold", cur_fold+1)
-            train_model(model, train_loader, val_loader,lr, model_save_path=model_save_path)
+            cur_w, cur_m = test_model(model, val_loader,lr, model_save_path=model_save_path)
+            weighted_f1s.append(cur_w)
+            macro_f1s.append(cur_m)
+        print("The mean F1 score is:", np.mean(weighted_f1s))
+        print("The sd is:", np.std(weighted_f1s))
+        print("The mean macro F1 score is:", np.mean(macro_f1s))
+        print("The sd is:", np.std(macro_f1s))
+        print("===============================")
