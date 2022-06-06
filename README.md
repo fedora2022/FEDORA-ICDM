@@ -8,15 +8,24 @@ We suggest using Anaconda to set up the enviroment needed for FEDORA.
 
 Python version used is python 3.6.13. Please check the requirements.txt file in the directory to install all the required packages.
 
-## Datasets
-
-The datasets used in our paper are [Semtab 2019](http://www.cs.ox.ac.uk/isg/challenges/sem-tab/2019/#datasets) and [Webtables](https://github.com/megagonlabs/sato/tree/master/table_data). We have pre-processed the datasets into .jsonl format in [data](./data) directory. If you want to test FEDORA on other datasets, you can follow the /jsonl format stored and modify the experimental scripts accordingly. 
-
 ## Replicating results
 
-## Extracting FDs
+To replicate the results in our paper, please kindly follow the steps below: <br>
+1. Git clone the whole repository.
+2. Set up the environment according to requirements.
+3. Modify the [data](./data) directories if necessary.
+4. Download the pre-trained models for the 5-fold cross validation in [pre-trained](./pre-trained).
+5. Run [FEDORA-Semtab-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab-test.py) and [FEDORA-WebTables-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables-test.py) and check the outputs.
 
 ## Train from scratch
+
+If you want to train FEDORA from scratch, please follow the steps below: <br>
+1. Git clone the whole repository.
+2. Set up the environment according to requirements.
+3. Pre-process the datasets if you do not want to use our pre-processed [data](./data). (optional)
+4. Mine the FDs from the tables and stored them as a side information if you do not use our pre-processed [data](./data). (optional)
+5. Run [FEDORA-Semtab.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab.py) and [FEDORA-WebTables.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables.py) to store the training models.
+6. Run [FEDORA-Semtab-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab-test.py) and [FEDORA-WebTables-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables-test.py) and check the outputs.
 
 ## Contact
 
