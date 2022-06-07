@@ -24,10 +24,12 @@ To replicate the results in our paper, please kindly follow the steps below: <br
 If you want to train FEDORA from scratch, please follow the steps below: <br>
 1. Git clone the whole repository.
 2. Set up the environment according to requirements.
-3. Mine the FDs from the tables and stored them as a side information if you do not use our pre-processed [data](./data). Ckeck the [FD](./FD) directory for details. (optional)
-4. Pre-process the datasets if you do not want to use our pre-processed [data](./data). (optional)
-5. Run [FEDORA-Semtab.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab.py) and [FEDORA-WebTables.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables.py) to store the training models.
-6. Run [FEDORA-Semtab-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab-test.py) and [FEDORA-WebTables-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables-test.py) and check the outputs.
+3. Download the raw datasets. (optional)
+4. Mask the headers using [mask-headers.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/pre-process/mask-headers.py). Check the [pre-process](./pre-process) directory. (optional)
+5. Mine the FDs from the tables and stored them as a side information if you do not use our pre-processed [data](./data). Ckeck the [FD](./FD) directory for details. (optional)
+6. Pre-process the datasets with [generate_jsonl.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/pre-process/generate_jsonl.py) if you do not want to use our pre-processed [data](./data). (optional)
+7. Run [FEDORA-Semtab.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab.py) and [FEDORA-WebTables.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables.py) to store the training models.
+8. Run [FEDORA-Semtab-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-Semtab-test.py) and [FEDORA-WebTables-test.py](https://github.com/fedora2022/FEDORA-ICDM/blob/main/scripts/FEDORA-WebTables-test.py) and check the outputs.
 
 ## Contact
 
