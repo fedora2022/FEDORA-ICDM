@@ -6,7 +6,7 @@ rounds = [1,3,4]
 for round in rounds:
     
     file_path = 'FEDORA-ICDM/raw_data/Semtab2019/data/Round '+str(round)+'/tables/'
-    OUTPUT_PATH = 'FEDORA/data/no-headers/Semtab2019/Round'+str(round)+'/'
+    OUTPUT_PATH = 'FEDORA-ICDM/data/no-headers/Semtab2019/Round'+str(round)+'/'
 
     headers = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
     i = 0
