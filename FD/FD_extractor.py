@@ -175,7 +175,7 @@ def computeSingletonPartitions(listofcols):
 
 rounds = [1,3,4]
 for round in rounds:
-	file_dir = 'FEDORA/raw-data/no-headers/Semtab2019/Round'+str(round)+'/' # You should get the table headers removed before running this
+	file_dir = 'FEDORA/data/no-headers/Semtab2019/Round'+str(round)+'/' # You should get the table headers removed before running this
 	output_dir = "FEDORA/data/fd/Semtab2019/Round"+str(round)+'/' # Output directory for FDs
 	i = 0
 	for file_name in os.listdir(file_dir):
