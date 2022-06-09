@@ -289,6 +289,7 @@ if __name__ == '__main__':
     for lr in lrs:
         print("start for learning rate:", lr)
         for cur_fold in range(5):
+            ## if cur_fold == 0: #(this line is for parallel training the model on five folds, uncomment this line and adjust the indentation properly, you can then select the fold to be trained by changing 0 to 1,2,3,4)
             cur_train_cols = train_cols[cur_fold]
             cur_train_labels = train_labels[cur_fold]
             cur_train_fds = train_fds[cur_fold]
