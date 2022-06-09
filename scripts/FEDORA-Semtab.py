@@ -270,6 +270,7 @@ if __name__ == '__main__':
     for lr in lrs:
         print("start for learning rate:", lr)
         for cur_fold, (train_idx, val_idx) in enumerate(sfolder_cv.split(target_cols, labels)):
+            ## if cur_fold == 0: #(this line is for parallel training the model on five folds, uncomment this line and adjust the indentation properly, you can then select the fold to be trained by changing 0 to 1,2,3,4)
             train_cols = []
             train_fds = []
             train_labels = []
