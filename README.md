@@ -10,6 +10,14 @@ We suggest using Anaconda to set up the enviroment needed for FEDORA.
 
 Python version used is python 3.6.13. Please check the requirements.txt file in the directory to install all the required packages.
 
+## Datasets used
+
+Link to [Semtab2019 dataset](http://www.cs.ox.ac.uk/isg/challenges/sem-tab/2019/#datasets).
+
+Link to [Webtables dataset](https://github.com/megagonlabs/sato/tree/master/table_data). (Multi-only)
+
+You do not need to download the raw datasets, if you use our pre-processed data in the [data](./data) directory.
+
 ## Replicating results
 
 To replicate the results in our paper, please kindly follow the steps below: <br>
