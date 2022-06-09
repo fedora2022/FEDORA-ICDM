@@ -294,7 +294,7 @@ if __name__ == '__main__':
     test_jsonl_path = "./data/test.jsonl"
     test_target_cols, test_fds, test_labels = load_jsonl(test_jsonl_path, label_dict)
     test_loader = get_loader(test_target_cols, test_fds, test_labels, 1, False)
-    print("###############################")
+    print("###############################") # Testing code, comment it if you want to train and test seperately.
     for lr in lrs:
         print("start for testing learning rate:", lr)
         weighted_f1s = []
