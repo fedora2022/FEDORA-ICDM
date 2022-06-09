@@ -290,11 +290,12 @@ if __name__ == '__main__':
             model_save_path = './checkpoints/FEDORA_FD'+"_lr="+str(lr)+'_{}.pkl'.format(cur_fold+1)
             print("Starting fold", cur_fold+1)
             train_model(model, train_loader, val_loader,lr, model_save_path=model_save_path)
-            
+    
+    print("###############################") # Testing code, comment it if you want to train and test seperately.
     test_jsonl_path = "./data/test.jsonl"
     test_target_cols, test_fds, test_labels = load_jsonl(test_jsonl_path, label_dict)
     test_loader = get_loader(test_target_cols, test_fds, test_labels, 1, False)
-    print("###############################") # Testing code, comment it if you want to train and test seperately.
+    
     for lr in lrs:
         print("start for testing learning rate:", lr)
         weighted_f1s = []
